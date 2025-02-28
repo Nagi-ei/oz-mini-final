@@ -10,6 +10,9 @@ export default function App() {
   }
 
   if (isError) {
+    console.log(error);
+    // 여기서 error.status 번호에 따라서 나눠서 처리
+    // 근데 이러면 받아오는 컴포넌트 마다 따로 해야하니까 usePlaces에서 해서 넘겨줘야하나? 어떻게?
     return <div>{`에러: ${error.name} (${error.message})`}</div>;
   }
 
