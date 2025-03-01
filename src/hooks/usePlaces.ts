@@ -1,10 +1,14 @@
 import { placesApi } from '@/api/placesApi';
+import { Place } from '@/types/places';
 import { useQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 
 export default function usePlaces() {
-  return useQuery({
+  return useQuery<Place[], AxiosError>({
     queryKey: ['places'],
     queryFn: placesApi.getPlaces,
   });
-  // 에러 처리를 여기서 하거나..? 아니면 받아서 에러 객체 까보고 하기
 }
+
+// 당장은 안 씀.
+// 정렬 방식을 여러가지 중에 선택하는 기능을 추가하면 이게 기본 정렬.

@@ -9,3 +9,8 @@ export type Place = {
   lon: number;
   description: string;
 };
+
+export type Coordinate = {
+  lat: number;
+  lon: number;
+};
