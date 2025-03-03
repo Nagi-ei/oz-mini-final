@@ -8,17 +8,19 @@ export const favoritesApi = {
     const response = await axios.get<{ places: Place[] }>(
       `${BASE_URL}/users/places`
     );
-    console.log(response);
+    // console.log(response);
     return response.data.places;
   },
-  postFavorites: async (data: Place) => {
+
+  postFavorites: async (place: Place) => {
     const response = await axios.post<{ message: string }>(
       `${BASE_URL}/users/places`,
-      data
+      { place: place }
     );
-    console.log(response);
+    // console.log(response);
     return response.data.message;
   },
+
   deleteFavorites: async (id: string) => {
     const response = await axios.delete(`${BASE_URL}/users/places/${id}`);
     console.log(response);
