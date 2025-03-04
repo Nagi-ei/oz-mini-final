@@ -1,19 +1,16 @@
 import { BASE_URL } from '@/constants';
-import { Place } from '@/types/places';
+import { Action, ActionType, Place } from '@/types/places';
 import React, { useCallback, useState } from 'react';
 import Modal from './modal';
-import { UseMutationResult } from '@tanstack/react-query';
 
 function PlaceCard({
   place,
-  postAction,
-  deleteAction,
-  message,
+  action,
+  type,
 }: {
   place: Place;
-  postAction?: UseMutationResult<string, Error, Place, unknown>;
-  deleteAction?: UseMutationResult<void, Error, string, unknown>;
-  message: string;
+  action: Action;
+  type: ActionType;
 }) {
   const [isModalOn, setIsModalOn] = useState<boolean>(false);
   const offModal = useCallback(() => setIsModalOn(false), []);
@@ -35,13 +32,7 @@ function PlaceCard({
         />
       </li>
       {isModalOn && (
-        <Modal
-          offModal={offModal}
-          place={place}
-          postAction={postAction}
-          deleteAction={deleteAction}
-          message={message}
-        />
+        <Modal offModal={offModal} place={place} action={action} type={type} />
       )}
     </>
   );
