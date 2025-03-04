@@ -1,5 +1,10 @@
 import FavoriteList from './components/favoriteList';
 import PlacesList from './components/placesList';
+import LoadingSkeleton from './components/loadingSkeleton';
+import ErrorFavorites from './components/ErrorFavorites';
+import ErrorPlaces from './components/ErrorPlaces';
+import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 
 export default function App() {
@@ -19,11 +24,19 @@ export default function App() {
         </TabsList>
 
         <TabsContent value='list'>
-          <PlacesList />
+          <ErrorBoundary FallbackComponent={ErrorPlaces}>
+            <Suspense fallback={<LoadingSkeleton />}>
+              <PlacesList />
+            </Suspense>
+          </ErrorBoundary>
         </TabsContent>
 
         <TabsContent value='favorites'>
-          <FavoriteList />
+          <ErrorBoundary FallbackComponent={ErrorFavorites}>
+            <Suspense fallback={<LoadingSkeleton />}>
+              <FavoriteList />
+            </Suspense>
+          </ErrorBoundary>
         </TabsContent>
       </Tabs>
     </main>

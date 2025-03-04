@@ -1,11 +1,12 @@
 import { placesApi } from '@/api/placesApi';
+import { QUERY_KEYS } from '@/constants';
 import { Place } from '@/types/places';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 export default function usePlaces() {
-  return useQuery<Place[], AxiosError>({
-    queryKey: ['places'],
+  return useSuspenseQuery<Place[], AxiosError>({
+    queryKey: [QUERY_KEYS.places],
     queryFn: placesApi.getPlaces,
   });
 }

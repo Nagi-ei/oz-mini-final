@@ -2,11 +2,12 @@ import { AxiosError } from 'axios';
 import { locationApi } from '@/api/locationApi';
 import { placesApi } from '@/api/placesApi';
 import { sortPlacesByDistance } from '@/lib/loc';
-import { useQueries, UseQueryResult } from '@tanstack/react-query';
+import { UseQueryResult, useSuspenseQueries } from '@tanstack/react-query';
 import { Coordinate, Place } from '@/types/places';
+import { QUERY_KEYS } from '@/constants';
 
 export default function usePlacesByDitance() {
-  const results = useQueries<
+  const results = useSuspenseQueries<
     [
       UseQueryResult<Coordinate, AxiosError>,
       UseQueryResult<Place[], AxiosError>
@@ -14,11 +15,11 @@ export default function usePlacesByDitance() {
   >({
     queries: [
       {
-        queryKey: ['currentLoaction'],
+        queryKey: [QUERY_KEYS.currentLocation],
         queryFn: locationApi.getCurrentLocation,
       },
       {
-        queryKey: ['places'],
+        queryKey: [QUERY_KEYS.places],
         queryFn: placesApi.getPlaces,
       },
     ],
@@ -42,6 +43,7 @@ export default function usePlacesByDitance() {
   }
 
   // isSuccess 일때 .data가 무조건 undefined가 아니라는걸 타입스크립트는 모르는 듯. as를 안쓸수 없나
+  // if 문 안에 있어서 sortPlaceByDistance를 useMemo로 메모이제이션 할 수 없음.
   if (currentLocationQuery.data && placesQuery.data) {
     const placesByDistance = sortPlacesByDistance(
       placesQuery.data,
@@ -49,8 +51,6 @@ export default function usePlacesByDitance() {
     );
     return { placesByDistance, isLoading, isError, error: null };
   }
-
-  // 여기서 다 에러 코드에 따른 출력할 메세지까지 다 셋팅해서 리턴해주는게 나을까?
 
   // 에러
   return {

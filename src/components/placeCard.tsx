@@ -1,10 +1,10 @@
 import { BASE_URL } from '@/constants';
 import { Place } from '@/types/places';
-import { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Modal from './modal';
 import { UseMutationResult } from '@tanstack/react-query';
 
-export default function PlaceCard({
+function PlaceCard({
   place,
   postAction,
   deleteAction,
@@ -16,8 +16,7 @@ export default function PlaceCard({
   message: string;
 }) {
   const [isModalOn, setIsModalOn] = useState<boolean>(false);
-
-  const offModal = () => setIsModalOn(false);
+  const offModal = useCallback(() => setIsModalOn(false), []);
 
   return (
     <>
@@ -47,3 +46,5 @@ export default function PlaceCard({
     </>
   );
 }
+
+export default React.memo(PlaceCard);
